@@ -17,6 +17,33 @@ Start it from the project root:   streamlit run app.py
 import hashlib
 import os
 import pickle
+import shutil
+import zipfile
+from pathlib import Path
+
+
+def unpack_dataset_zips():
+    """Online deployment: unzip dataset_zips/*.zip into data/casting_512x512/.
+
+    The browser upload on GitHub cannot take 1,300 separate images, so the
+    unchanged class folders are stored as two zip files and unpacked here once,
+    before the package looks for the data folder.
+    """
+    root = Path(__file__).resolve().parent
+    target = root / "data" / "casting_512x512"
+    for z in sorted((root / "dataset_zips").glob("*.zip")):
+        with zipfile.ZipFile(z) as zf:
+            folder = zf.namelist()[0].split("/")[0]          # def_front or ok_front
+            if (target / folder).is_dir():
+                continue
+            tmp = target / f".tmp_{folder}"
+            shutil.rmtree(tmp, ignore_errors=True)
+            zf.extractall(tmp)
+            (tmp / folder).rename(target / folder)
+            shutil.rmtree(tmp, ignore_errors=True)
+
+
+unpack_dataset_zips()
 
 import altair as alt
 import cv2
@@ -259,8 +286,17 @@ class StudyData:
             df = DataSplitter().load_or_create(CastingDataset().index)
             return df[df["path"].map(os.path.exists)]
         except FileNotFoundError:
+            # Online deployment: the full dataset is not in the repository, so the
+            # Inspector uses the unchanged sample test images in samples/.
             path = CFG.output_dir / "tables" / "data_split.csv"
-            return pd.read_csv(path).assign(path="") if path.exists() else None
+            if not path.exists():
+                return None
+            df = pd.read_csv(path).assign(path="")
+            samples = CFG.project_root / "samples"
+            for sub in ("ok_front", "def_front"):
+                for f in (samples / sub).glob("*.jp*g"):
+                    df.loc[df["filename"] == f.name, "path"] = str(f)
+            return df
 
     @classmethod
     def _probs(cls):
@@ -351,6 +387,8 @@ class CastingDashboard:
         if tests.empty:
             st.info("Put the dataset in the `data` folder to use the test images, or upload a photo.")
             return None
+        if tests["path"].str.contains("samples").all():
+            st.caption(f"{len(tests)} sample test images from Dabhi (2020), CC BY-NC-ND 4.0.")
         names = tests["filename"].tolist()
         sk = f"{key}_choice"
         st.session_state.setdefault(sk, tests[tests.label == 1].filename.iloc[0])
