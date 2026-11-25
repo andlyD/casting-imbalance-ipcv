@@ -1,0 +1,42 @@
+digraph UML {
+  rankdir=RL; dpi=220; nodesep=0.18; ranksep=0.6;
+  node [shape=plain, fontname="Helvetica", fontsize=9];
+  edge [fontname="Helvetica", fontsize=8, color="#444444"];
+  BaseClassifier [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#DCEAF7"><tr><td><i><b>BaseClassifier</b></i> «abstract»</td></tr><hr/><tr><td align="left">+ fit(X, y, class_weight, X_val, y_val)<br align="left"/>+ predict_proba(X)<br align="left"/>+ predict(X, threshold)<br align="left"/></td></tr></table>>];
+  SVM [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#F2F2F2"><tr><td><b>SVMClassifier</b></td></tr><hr/><tr><td align="left">C, gamma, seed</td></tr></table>>];
+  RF [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#F2F2F2"><tr><td><b>RandomForestModel</b></td></tr><hr/><tr><td align="left">n_estimators, seed</td></tr></table>>];
+  LR [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#F2F2F2"><tr><td><b>LogisticRegressionModel</b></td></tr><hr/><tr><td align="left">C, seed</td></tr></table>>];
+  KNN [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#F2F2F2"><tr><td><b>KNNModel</b></td></tr><hr/><tr><td align="left">k, class_weight</td></tr><hr/><tr><td align="left">+ predict_proba(X): re-weighted votes</td></tr></table>>];
+  Head [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#F2F2F2"><tr><td><b>TransferHead</b></td></tr><hr/><tr><td align="left">Dense(128)-Dropout-Dense(1)<br align="left"/>history</td></tr></table>>];
+  CNN [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#F2F2F2"><tr><td><b>SimpleCNN</b></td></tr><hr/><tr><td align="left">+ build()<br align="left"/>history</td></tr></table>>];
+  SVM -> BaseClassifier [arrowhead=empty]; RF -> BaseClassifier [arrowhead=empty]; LR -> BaseClassifier [arrowhead=empty]; KNN -> BaseClassifier [arrowhead=empty];
+  Head -> BaseClassifier [arrowhead=empty]; CNN -> BaseClassifier [arrowhead=empty];
+
+  Strategy [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#FFF2CC"><tr><td><i><b>ImbalanceStrategy</b></i> «abstract»</td></tr><hr/><tr><td align="left">name, family, tunes_threshold</td></tr><hr/><tr><td align="left">+ resample(X, y, rng, ids)<br align="left"/>+ class_weight(y)<br align="left"/></td></tr></table>>];
+  S1 [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#F2F2F2"><tr><td>NoHandling | ClassWeighting | RandomOverSampling |<br/>SMOTEOversampling | RandomUnderSampling |<br/>AugmentationOversampling | ThresholdMoving</td></tr></table>>];
+  S1 -> Strategy [arrowhead=empty];
+  Thr [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#F2F2F2"><tr><td><b>ThresholdOptimizer</b></td></tr><hr/><tr><td align="left">+ fit(y_val, prob_val) : float</td></tr></table>>];
+
+  Runner [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#E2F0D9"><tr><td><b>ExperimentRunner</b></td></tr><hr/><tr><td align="left">train_df, val_df, test_df<br align="left"/>rows, probabilities, histories</td></tr><hr/><tr><td align="left">+ run(tag, model_factory, get_array, methods, ...)<br align="left"/>+ results()<br align="left"/></td></tr></table>>];
+  Builder [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#F2F2F2"><tr><td><b>ImbalanceScenarioBuilder</b></td></tr><hr/><tr><td align="left">+ build(ratio, seed)<br align="left"/>+ describe(df)<br align="left"/></td></tr></table>>];
+  Eval [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#F2F2F2"><tr><td><b>Evaluator</b></td></tr><hr/><tr><td align="left">+ compute(y, prob, threshold)</td></tr></table>>];
+  Trans [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#F2F2F2"><tr><td><b>FeatureTransformer</b></td></tr><hr/><tr><td align="left">StandardScaler + PCA</td></tr></table>>];
+  Data [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#F2F2F2"><tr><td><b>CastingDataset</b> / <b>DataSplitter</b></td></tr><hr/><tr><td align="left">index, split(), load_or_create()</td></tr></table>>];
+  Pre [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#F2F2F2"><tr><td><b>ImagePreprocessor</b></td></tr><hr/><tr><td align="left">size, mode<br align="left"/>+ process(image)<br align="left"/></td></tr></table>>];
+  Feat [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#F2F2F2"><tr><td><b>HandcraftedFeatureExtractor</b> / <b>FeatureBank</b></td></tr><hr/><tr><td align="left">+ hog / lbp / glcm_features()<br align="left"/>+ get(paths, groups)<br align="left"/></td></tr></table>>];
+  Emb [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#F2F2F2"><tr><td><b>MobileNetV2Embedder</b></td></tr><hr/><tr><td align="left">+ embed(images)</td></tr></table>>];
+  Svc [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#FBE3D6"><tr><td><b>InspectionService</b> «facade»</td></tr><hr/><tr><td align="left">ClassicalPipeline, MobileNetPipeline<br align="left"/>+ inspect(image)<br align="left"/></td></tr></table>>];
+  App [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" bgcolor="#FBE3D6"><tr><td><b>CastingDashboard</b> (Streamlit)</td></tr><hr/><tr><td align="left">StudyData; 5 pages</td></tr></table>>];
+
+  Runner -> Builder [arrowhead=diamond, dir=back, arrowtail=diamond, label="has"];
+  Runner -> Strategy [style=dashed, arrowhead=open, label="uses (factory)"];
+  Runner -> BaseClassifier [style=dashed, arrowhead=open, label="trains"];
+  Runner -> Eval [style=dashed, arrowhead=open];
+  Runner -> Thr [style=dashed, arrowhead=open];
+  Runner -> Trans [style=dashed, arrowhead=open];
+  Runner -> Data [style=dashed, arrowhead=open];
+  Feat -> Pre [arrowhead=diamond, dir=back, arrowtail=odiamond];
+  Svc -> Feat [style=dashed, arrowhead=open]; Svc -> Emb [style=dashed, arrowhead=open];
+  Svc -> SVM [style=dashed, arrowhead=open]; Svc -> Head [style=dashed, arrowhead=open];
+  App -> Svc [style=dashed, arrowhead=open];
+}

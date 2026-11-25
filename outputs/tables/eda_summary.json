@@ -1,0 +1,62 @@
+{
+  "split_counts": {
+    "OK": {
+      "train": 363,
+      "val": 78,
+      "test": 78
+    },
+    "Defective": {
+      "train": 547,
+      "val": 117,
+      "test": 117
+    }
+  },
+  "total_counts": {
+    "Defective": 781,
+    "OK": 519
+  },
+  "scenarios": [
+    {
+      "ratio": "Natural",
+      "n_ok": 363,
+      "n_defective": 547,
+      "imbalance_ratio_ok_to_def": 0.6636197440585009,
+      "minority_share": 0.3989010989010989
+    },
+    {
+      "ratio": "3:1",
+      "n_ok": 363,
+      "n_defective": 121,
+      "imbalance_ratio_ok_to_def": 3.0,
+      "minority_share": 0.25
+    },
+    {
+      "ratio": "10:1",
+      "n_ok": 363,
+      "n_defective": 36,
+      "imbalance_ratio_ok_to_def": 10.083333333333334,
+      "minority_share": 0.09022556390977443
+    },
+    {
+      "ratio": "20:1",
+      "n_ok": 363,
+      "n_defective": 18,
+      "imbalance_ratio_ok_to_def": 20.166666666666668,
+      "minority_share": 0.047244094488188976
+    }
+  ],
+  "intensity": {
+    "ok_mean": 148.95339419708546,
+    "ok_sd": 9.064259686169756,
+    "def_mean": 138.55649767398225,
+    "def_sd": 8.567824787690032,
+    "mannwhitney_p": 9.621323598565537e-76
+  },
+  "exact_duplicates_sha256": 0,
+  "nearest_neighbour_rms": {
+    "min": 3.8517446517944336,
+    "median": 22.103404998779297
+  },
+  "pairs_rms_below_5": 2,
+  "cross_split_pairs_rms_below_5": 2
+}

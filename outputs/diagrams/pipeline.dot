@@ -1,0 +1,54 @@
+digraph G {
+  rankdir=TB; nodesep=0.3; ranksep=0.34; dpi=220; newrank=true; compound=true;
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, fillcolor="#F2F2F2", color="#555555", penwidth=1.0, margin="0.12,0.06"];
+  edge [color="#555555", arrowsize=0.7];
+
+  data  [label="Kaggle casting_512x512\n1,300 images (781 Defective, 519 OK)", fillcolor="#DCEAF7"];
+  audit [label="EDA and integrity checks\nSHA-256 duplicates, near-duplicates, brightness"];
+  split [label="Stratified split, created once (seed 42)", fillcolor="#DCEAF7"];
+  data -> audit -> split;
+
+  train [label="Training set (910)", fillcolor="#DCEAF7"];
+  val   [label="Validation set (195)\nhyper-parameters, early stopping,\nthreshold selection", shape=note, fillcolor="#FFFFFF"];
+  test  [label="Test set (195)\nuntouched until evaluation", shape=note, fillcolor="#FFFFFF"];
+  split -> train; split -> val; split -> test;
+  { rank=same; train; val; test; }
+
+  scen [label="Imbalance scenario builder (training set only)\nNatural 0.66:1 | 3:1 | 10:1 | 20:1 (OK : Defective)\n5 repetitions per ratio (CNN: 2 natural, 3 imbalanced)", fillcolor="#FBE3D6"];
+  train -> scen;
+
+  subgraph cluster_c { label="Classical pathway"; fontname="Helvetica-Bold"; fontsize=10; color="#0072B2"; style="rounded";
+    pc  [label="Grayscale → 128 × 128\n→ Gaussian 3 × 3"];
+    fe  [label="HOG (8,100) + LBP (160) + GLCM (18)\n= 8,278 features"];
+    pca [label="StandardScaler + PCA (95% variance)\nfitted on the training subset"];
+    pc -> fe -> pca; }
+  subgraph cluster_n { label="Neural pathway"; fontname="Helvetica-Bold"; fontsize=10; color="#D55E00"; style="rounded";
+    pn  [label="Grayscale → 224 × 224 or 128 × 128\n→ Gaussian 3 × 3"];
+    emb [label="MobileNetV2 (ImageNet, frozen)\n→ 1,280-D embedding"];
+    raw [label="128 × 128 images\nfor the CNN"];
+    pn -> emb; pn -> raw; }
+  scen -> pc; scen -> pn;
+
+  ih [label="Imbalance handling on the training data\nClass weighting | Random oversampling | SMOTE |\nRandom undersampling | Augmentation oversampling", fillcolor="#FFF2CC"];
+  pca -> ih; emb -> ih; raw -> ih;
+
+  subgraph cluster_m { label="Model training"; fontname="Helvetica-Bold"; fontsize=10; color="#777777"; style="rounded,dashed";
+    cm   [label="SVM (RBF) | Logistic Regression\nk-NN | Random Forest"];
+    head [label="MobileNetV2\ndense head"];
+    cnn  [label="4-block CNN trained from scratch\n(on-the-fly augmentation)"];
+    { rank=same; cm; head; cnn; } cm -> head -> cnn [style=invis]; }
+  ih -> cm; ih -> head; ih -> cnn;
+
+  tm [label="Threshold moving (post-hoc)\ndefault 0.5 or threshold tuned on validation", fillcolor="#FFF2CC"];
+  cm -> tm; head -> tm; cnn -> tm;
+
+  ev [label="Evaluation of every run on the test set\nBalanced accuracy, class recalls, precision, F1, MCC, ROC-AUC", fillcolor="#E2F0D9"];
+  tm -> ev;
+  an [label="Analysis of 664 main runs and 600 ablation runs\nMean ± SD, Friedman and Wilcoxon-Holm tests, Ablations A to D", fillcolor="#E2F0D9"];
+  ev -> an;
+  app [label="Best classical and neural pipelines retrained on the full training split\n→ Streamlit dashboard with Grad-CAM", fillcolor="#E2F0D9"];
+  an -> app;
+
+  val -> head [style=dashed, constraint=false, lhead=cluster_m]; val -> tm [style=dashed, constraint=false];
+  test -> ev [style=dashed, constraint=false];
+}

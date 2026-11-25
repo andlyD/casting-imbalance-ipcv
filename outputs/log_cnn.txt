@@ -1,0 +1,49 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794037761.278806   10729 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794037762.093884   10729 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+[main] CNN          ratio=natural rep=0 none                       BA=0.897 Rec_def=0.872 F1=0.907 t=392.83s
+[main] CNN          ratio=natural rep=0 class_weight               BA=0.895 Rec_def=0.855 F1=0.901 t=361.13s
+[main] CNN          ratio=natural rep=0 augmentation_oversampling  BA=0.910 Rec_def=0.897 F1=0.921 t=384.19s
+[main] CNN          ratio=natural rep=0 threshold_moving           BA=0.889 Rec_def=0.829 F1=0.890 t=0.08s
+[main] CNN          ratio=natural rep=1 none                       BA=0.893 Rec_def=0.889 F1=0.908 t=343.48s
+[main] CNN          ratio=natural rep=1 class_weight               BA=0.889 Rec_def=0.855 F1=0.897 t=349.4s
+[main] CNN          ratio=natural rep=1 augmentation_oversampling  BA=0.925 Rec_def=0.889 F1=0.929 t=385.01s
+[main] CNN          ratio=natural rep=1 threshold_moving           BA=0.910 Rec_def=0.923 F1=0.927 t=0.08s
+[main] CNN          ratio=3       rep=0 none                       BA=0.825 Rec_def=0.829 F1=0.851 t=108.74s
+[main] CNN          ratio=3       rep=0 class_weight               BA=0.895 Rec_def=0.932 F1=0.920 t=184.28s
+[main] CNN          ratio=3       rep=0 augmentation_oversampling  BA=0.893 Rec_def=0.889 F1=0.908 t=316.69s
+[main] CNN          ratio=3       rep=0 threshold_moving           BA=0.831 Rec_def=0.752 F1=0.830 t=0.08s
+[main] CNN          ratio=3       rep=1 none                       BA=0.876 Rec_def=0.829 F1=0.882 t=133.09s
+[main] CNN          ratio=3       rep=1 class_weight               BA=0.855 Rec_def=0.889 F1=0.885 t=173.84s
+[main] CNN          ratio=3       rep=1 augmentation_oversampling  BA=0.904 Rec_def=0.846 F1=0.904 t=302.6s
+[main] CNN          ratio=3       rep=1 threshold_moving           BA=0.876 Rec_def=0.829 F1=0.882 t=0.09s
+[main] CNN          ratio=3       rep=2 none                       BA=0.801 Rec_def=0.872 F1=0.850 t=82.47s
+[main] CNN          ratio=3       rep=2 class_weight               BA=0.827 Rec_def=0.872 F1=0.864 t=138.4s
+[main] CNN          ratio=3       rep=2 augmentation_oversampling  BA=0.902 Rec_def=0.880 F1=0.912 t=316.46s
+[main] CNN          ratio=3       rep=2 threshold_moving           BA=0.769 Rec_def=0.795 F1=0.809 t=0.08s
+[main] CNN          ratio=10      rep=0 none                       BA=0.735 Rec_def=0.855 F1=0.810 t=55.1s
+[main] CNN          ratio=10      rep=0 class_weight               BA=0.823 Rec_def=0.863 F1=0.860 t=148.87s
+[main] CNN          ratio=10      rep=0 augmentation_oversampling  BA=0.876 Rec_def=0.906 F1=0.902 t=263.1s
+[main] CNN          ratio=10      rep=0 threshold_moving           BA=0.823 Rec_def=0.709 F1=0.810 t=0.09s
+[main] CNN          ratio=10      rep=1 none                       BA=0.846 Rec_def=0.744 F1=0.837 t=63.26s
+[main] CNN          ratio=10      rep=1 class_weight               BA=0.831 Rec_def=0.880 F1=0.869 t=163.35s
+[main] CNN          ratio=10      rep=1 augmentation_oversampling  BA=0.923 Rec_def=0.872 F1=0.923 t=315.5s
+[main] CNN          ratio=10      rep=1 threshold_moving           BA=0.833 Rec_def=0.769 F1=0.837 t=0.08s
+[main] CNN          ratio=10      rep=2 none                       BA=0.667 Rec_def=0.872 F1=0.782 t=53.61s
+[main] CNN          ratio=10      rep=2 class_weight               BA=0.842 Rec_def=0.863 F1=0.871 t=173.9s
+[main] CNN          ratio=10      rep=2 augmentation_oversampling  BA=0.917 Rec_def=0.897 F1=0.925 t=311.39s
+[main] CNN          ratio=10      rep=2 threshold_moving           BA=0.850 Rec_def=0.778 F1=0.850 t=0.08s
+[main] CNN          ratio=20      rep=0 none                       BA=0.551 Rec_def=0.949 F1=0.755 t=56.89s
+[main] CNN          ratio=20      rep=0 class_weight               BA=0.793 Rec_def=0.829 F1=0.833 t=162.77s
+[main] CNN          ratio=20      rep=0 augmentation_oversampling  BA=0.853 Rec_def=0.872 F1=0.879 t=303.34s
+[main] CNN          ratio=20      rep=0 threshold_moving           BA=0.814 Rec_def=0.795 F1=0.834 t=0.08s
+[main] CNN          ratio=20      rep=1 none                       BA=0.799 Rec_def=0.675 F1=0.782 t=59.55s
+[main] CNN          ratio=20      rep=1 class_weight               BA=0.878 Rec_def=0.872 F1=0.895 t=121.65s
+[main] CNN          ratio=20      rep=1 augmentation_oversampling  BA=0.855 Rec_def=0.863 F1=0.878 t=128.39s
+[main] CNN          ratio=20      rep=1 threshold_moving           BA=0.814 Rec_def=0.718 F1=0.808 t=0.09s
+[main] CNN          ratio=20      rep=2 none                       BA=0.694 Rec_def=0.863 F1=0.792 t=53.47s
+[main] CNN          ratio=20      rep=2 class_weight               BA=0.831 Rec_def=0.803 F1=0.847 t=160.86s
+[main] CNN          ratio=20      rep=2 augmentation_oversampling  BA=0.921 Rec_def=0.880 F1=0.924 t=329.67s
+[main] CNN          ratio=20      rep=2 threshold_moving           BA=0.838 Rec_def=0.752 F1=0.834 t=0.08s
+Saved 44 CNN runs.

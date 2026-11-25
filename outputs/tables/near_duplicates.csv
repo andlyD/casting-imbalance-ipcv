@@ -1,0 +1,3 @@
+file_a,file_b,split_a,split_b,rms_difference
+cast_ok_0_5326.jpeg,cast_ok_0_6880.jpeg,val,train,4.12
+cast_ok_0_4691.jpeg,cast_ok_0_5191.jpeg,train,test,3.85
