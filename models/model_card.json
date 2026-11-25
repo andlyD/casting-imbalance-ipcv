@@ -1,0 +1,53 @@
+{
+  "training_images": 910,
+  "pipelines": {
+    "classical": {
+      "name": "SVM (HOG + LBP + GLCM)",
+      "imbalance_handling": "threshold_moving",
+      "threshold": 0.5,
+      "test_metrics": {
+        "accuracy": 0.9743589743589743,
+        "balanced_accuracy": 0.9743589743589743,
+        "recall_defective": 0.9743589743589743,
+        "recall_ok": 0.9743589743589743,
+        "precision_defective": 0.9827586206896551,
+        "f1_defective": 0.9785407725321889,
+        "g_mean": 0.9743589743589743,
+        "mcc": 0.9467488995664083,
+        "roc_auc": 0.9981371904448828,
+        "pr_auc": 0.9987825424795072,
+        "false_negative_rate": 0.02564102564102564,
+        "false_positive_rate": 0.02564102564102564,
+        "tn": 76,
+        "fp": 2,
+        "fn": 3,
+        "tp": 114,
+        "threshold": 0.5
+      }
+    },
+    "mobilenet": {
+      "name": "MobileNetV2 (transfer learning)",
+      "imbalance_handling": "threshold_moving",
+      "threshold": 0.3,
+      "test_metrics": {
+        "accuracy": 0.9948717948717949,
+        "balanced_accuracy": 0.9935897435897436,
+        "recall_defective": 1.0,
+        "recall_ok": 0.9871794871794872,
+        "precision_defective": 0.9915254237288136,
+        "f1_defective": 0.9957446808510638,
+        "g_mean": 0.9935690651280802,
+        "mcc": 0.9893500691474347,
+        "roc_auc": 0.9998904229673461,
+        "pr_auc": 0.999927567724178,
+        "false_negative_rate": 0.0,
+        "false_positive_rate": 0.01282051282051282,
+        "tn": 77,
+        "fp": 1,
+        "fn": 0,
+        "tp": 117,
+        "threshold": 0.3
+      }
+    }
+  }
+}
